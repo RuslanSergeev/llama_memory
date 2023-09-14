@@ -9,15 +9,8 @@ from llama_index import (
     load_index_from_storage
 )
 from llama_index import Document
-from llama_index import node_parser
-from llama_index.data_structs.data_structs import Node
 from llama_index.llms import OpenAI
-from llama_index.indices.base import BaseIndex
-from llama_index.node_parser.interface import NodeParser
-from llama_index.readers.base import BaseReader
-from llama_index.readers.obsidian import ObsidianReader
 from llama_index.response.schema import (
-    RESPONSE_TYPE, 
     Response, 
     StreamingResponse
 )
@@ -25,7 +18,6 @@ from llama_index.chat_engine.types import (
     StreamingAgentChatResponse
 )
 from llama_index.schema import NodeWithScore, BaseNode
-from llama_index.node_parser import SentenceWindowNodeParser
 from llama_index.node_parser.simple import SimpleNodeParser
 
 from llama_index.indices.vector_store.base import VectorStoreIndex
