@@ -1,3 +1,8 @@
+# Historical heritage file. Shows how to build your knowledge base
+# using the vector similarity search capability in Redis.
+# It is no longer used in the main project.
+# ugpt stays from micro-GPT, aiming to say this is the minimalistic 
+# proof of concept.
 # First openai-api client
 # using openai api with redis as a memory store
 # memory store not used in main. 
