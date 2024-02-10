@@ -1,3 +1,7 @@
+# Main projects file. 
+# Contains code for memory-index creation,
+# modification and streamed or simple querying.
+
 import os
 import argparse
 from typing import Dict, List, Any
