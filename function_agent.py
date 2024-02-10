@@ -1,3 +1,9 @@
+# Simple llama-index recurrent agent
+# from tools example.
+# Tools added in this demo:
+# - bash shell with all the available unix toolset
+# - python interpreter
+
 import os
 
 from llama_index.llms import OpenAI
