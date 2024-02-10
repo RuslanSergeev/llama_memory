@@ -108,11 +108,15 @@ class Llama_memory:
         additional set of metadata, which will help to link it 
         with other chunks when performing the vector similarity search.
         '''
+# Title metadata extractor did not add value according to the UI
+# May be enabled in future.
 #        title_extractor = TitleExtractor(nodes=5)
         kw_extractor = KeywordExtractor(
             keywords = 5
         )
         extractors = [
+# Title metadata extractor did not add value according to the UI
+# May be enabled in future.
 #            title_extractor,
             kw_extractor
         ]
@@ -129,6 +133,8 @@ class Llama_memory:
             metadata_extractor = metadata_extractor,
             text_splitter = text_splitter
         )
+# Slower and more expensive node parser.
+# May be enabled in the future.
 #        node_parser = SentenceWindowNodeParser.from_defaults(
 #            window_size=5,
 #            window_metadata_key="window",
