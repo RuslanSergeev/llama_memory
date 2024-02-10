@@ -18,4 +18,4 @@ This appeared before there was such a pluggin in chat-GPT.
 
 
 ---
-🚧 This is still work in progress, rare glitches may happen. 🚧
+🚧 This is a work in progress, rare glitches may occur. 🚧
