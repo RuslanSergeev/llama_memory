@@ -103,6 +103,11 @@ class Llama_memory:
         return reader.load_data()
 
     def _create_node_parser(self):
+        ''' A node parser splits a big document into
+        smaller chunks being vectorized. Each chunk holds an 
+        additional set of metadata, which will help to link it 
+        with other chunks when performing the vector similarity search.
+        '''
 #        title_extractor = TitleExtractor(nodes=5)
         kw_extractor = KeywordExtractor(
             keywords = 5
@@ -131,11 +136,18 @@ class Llama_memory:
 #        )
 
     def add_directory(self, directory_path: str):
+        ''' Add a directory to knowledge base index:
+        - split each document into chunks.
+        - vectorize each chunk into nodes with metadata
+        - add nodes to knowledge base / index
+        '''
         documents = self._retrieve_documents(directory_path)
         nodes = self.node_parser.get_nodes_from_documents(documents)
         self.index.insert_nodes(nodes)
 
     def add_file(self, file_path: str):
+        ''' Add a single file to the knowledge base.
+        '''
         documents = self._retrieve_documents(file_path)
         nodes = self.node_parser.get_nodes_from_documents(documents)
         self.index.insert_nodes(nodes)
@@ -161,7 +173,9 @@ class Llama_memory:
         self.index.insert_nodes(nodes)
 
     def query(self, query: str) -> Response:
-        # return only the suggestions, do not ask the chat.
+        ''' Query your knowledge base.
+        return only the suggestions, do not ask the chat.
+        '''
         query_engine = self.index.as_query_engine(
             similarity_top_k=5,
             streaming=False
@@ -171,7 +185,11 @@ class Llama_memory:
     def query_stream(
         self,
         query: str
-    ) -> StreamingResponse:
+    ) -> StreamingResponse
+        ''' An interractive streaming version of the
+        index query. Allows a more user-friendly interractive
+        communication.
+        '''
         query_engine = self.index.as_query_engine(
             similarity_top_k=5,
             streaming=True
@@ -182,6 +200,9 @@ class Llama_memory:
         self,
         query: str
     ) -> List[NodeWithScore]:
+        ''' Return a set of nodes instead of a processed
+        digestible response. Useful in development and debugging.
+        '''
         retriever = self.index.as_retriever(
             similarity_top_k=5
         )
@@ -287,28 +308,38 @@ if __name__ == "__main__":
     print("creating memory...")
     m = Llama_memory(persist_dir)
 
+    # Add files to index if requested
     if args.add_files:
         print("adding files...")
         for file in args.add_files:
             m.add_file(file)
 
+    # Add directories to index
     if args.add_dirs:
         print("adding directories...")
         for directory in args.add_dirs:
             m.add_directory(directory)
 
+    # Save the new index after addition
     if args.save:
         print("saving memory...")
         m.save(args.save)
 
+    # Streaming or single querying.
     user_msg = ' '.join(args.user_query)
     if args.memory:
+        # Use only the data from memory.
+        # Do not allow the model training data
+        # to polute the answer.
         print("querying...")
         rsp = m.query_stream(user_msg)
         print_answer_start()
         rsp.print_response_stream()
         print_answer_end()
     else:
+        # Uses both the data from memory
+        # And from the chat-engine model
+        # training data.
         print("initializing the chat ...")
         while user_msg:
             rsp = m.chat_stream(user_msg)
